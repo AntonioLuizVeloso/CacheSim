@@ -8,7 +8,7 @@
  import java.util.Arrays;
 
 public class Simulation {
-    public static int cacheBlocks = 4;
+    public static int cacheBlocks = 32;
     public static int cacheLine = 64;
 
     public static void main(String[] args) throws Exception {
@@ -41,7 +41,7 @@ public class Simulation {
                 }
             }
 
-            if (cacheBlockArray[i % cacheBlocks] == -1) {
+            if (cacheBlockArray[i % cacheBlocks] == -1 && !inCache) {
                 blockIndex = i % cacheBlocks;
                 miss += 1;
             } else if (!inCache) { 
@@ -59,13 +59,13 @@ public class Simulation {
 
             System.out.println(Arrays.toString(hitMissTable[i]));
         }
-        
+
         System.out.println("Output: ");
         System.out.println("1. Memory Access Count: ");
         System.out.println("2. Cache Hit Count: " + hit);
         System.out.println("3. Cache Miss Count: " + miss);
-        System.out.println("4. Cache Hit Rate: " + ((double)hit / memSeq.length));
-        System.out.println("5. Cache Miss Rate: " + ((double)miss / memSeq.length));
+        System.out.println("4. Cache Hit Rate: " + (double)hit / memSeq.length);
+        System.out.println("5. Cache Miss Rate: " + (double)miss / memSeq.length);
         System.out.println("6. Average Memory Access Time: ");
         System.out.println("7. Total Memory Access Time: ");
     }
