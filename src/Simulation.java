@@ -6,6 +6,7 @@
  */
 
  import java.util.Arrays;
+ import java.util.Random;
 
 public class Simulation {
     public static int cacheBlocks = 32;
@@ -14,6 +15,31 @@ public class Simulation {
     public static void main(String[] args) throws Exception {
         int[] memSeqSample = {1, 7, 5, 0, 2, 1, 5, 6, 5, 2, 2, 0};
         mapping(memSeqSample);
+
+        testCases();
+    }
+
+    public static void testCases() {
+        //Sequential Sequence
+        int[] seqSeq = new int[8*cacheBlocks];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 2*cacheBlocks; j++) {
+                seqSeq[(2*i*cacheBlocks) + j] = j;
+            }
+        }
+
+        mapping(seqSeq);
+
+        //Random Sequence
+        int[] ranSeq = new int[4*cacheBlocks];
+        for (int i = 0; i < 4*cacheBlocks; i++) {
+            Random rand = new Random();
+            ranSeq[i] = rand.nextInt(4*cacheBlocks + 1);
+        }
+
+        mapping(ranSeq);
+
+        //Mid-Repeat Blocks
     }
 
     public static void mapping(int[] memSeq) {
