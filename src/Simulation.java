@@ -103,8 +103,6 @@ public class Simulation {
                 hitMissTable[i][2] = memSeq[i];
                 cacheBlockArray[blockIndex] = memSeq[i];
             }
-
-            System.out.println(Arrays.toString(hitMissTable[i]));
         }
 
         System.out.println("Output: ");
