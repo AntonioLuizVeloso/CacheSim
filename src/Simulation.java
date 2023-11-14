@@ -84,7 +84,7 @@ public class Simulation {
 
         for (int i = 0; i < memSeq.length; i++) {
             hitMissTable[i][0] = memSeq[i];
-            int blockIndex = -1;
+            int blockIndex = -1; //most recently used block index
             boolean inCache = false;
 
             for (int j = 0; j < cacheBlocks; j++) {
@@ -96,12 +96,18 @@ public class Simulation {
                 }
             }
 
-            if (cacheBlockArray[i % cacheBlocks] == -1 && !inCache) {
-                blockIndex = i % cacheBlocks;
-                miss += 1;
-            } else if (!inCache) { 
-                blockIndex = hitMissTable[i-1][3];
-                miss += 1;
+            if (!inCache) {
+                //if not in the cache and if no hits yet and iterations haven't been completed yet, iterate through the blocks
+                if (hit == 0 && i < cacheBlocks) {
+                    blockIndex = i;
+                    miss += 1;
+                } 
+                
+                //if there has been a hit before, take the index of most recently used
+                else {
+                    blockIndex = hitMissTable[i-1][3];
+                    miss += 1;
+                }
             }
 
             hitMissTable[i][3] = blockIndex;
@@ -161,7 +167,7 @@ public class Simulation {
                 int index = hitMissTable[i][3];
                 tempArray[index] = hitMissTable[i][0];
 
-                myWriter.write("Step " + i + " (Sequence: " + tempArray[index] + ")");
+                myWriter.write("Step " + i + " (Sequence: " + tempArray[index] + " | Block: " + index + ")");
                 myWriter.write(String.format("\r\n%10s ", "Blocks"));
                 for (int j = 0; j < cacheBlocks; j++) {
                     myWriter.write(String.format("%6s ", j));
