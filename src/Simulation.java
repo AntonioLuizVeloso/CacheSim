@@ -21,6 +21,7 @@ public class Simulation {
 
     public static void testCases() {
         //Sequential Sequence
+        System.out.println("\nTEST CASE 1");
         int[] seqSeq = new int[8*cacheBlocks];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 2*cacheBlocks; j++) {
@@ -30,6 +31,7 @@ public class Simulation {
 
         mapping(seqSeq);
 
+        System.out.println("\nTEST CASE 2");
         //Random Sequence
         int[] ranSeq = new int[4*cacheBlocks];
         for (int i = 0; i < 4*cacheBlocks; i++) {
@@ -39,7 +41,26 @@ public class Simulation {
 
         mapping(ranSeq);
 
+        System.out.println("\nTEST CASE 3");
         //Mid-Repeat Blocks
+        int[] midSeq = new int[4*(2*cacheBlocks+(cacheBlocks-2))];
+        int midSeqIndex = 0;
+        for (int i = 0; i < 4; i++) {
+            // First half of the sequence
+            for (int j = 0; j < cacheBlocks-1; j++) {
+                midSeq[midSeqIndex++] = j;
+            }
+            // Mid-repeat sequence
+            for (int j = 1; j < cacheBlocks-1; j++) {
+                midSeq[midSeqIndex++] = j;
+            }
+            // Second half of the sequence
+            for (int j = cacheBlocks-1; j < 2 * cacheBlocks; j++) {
+                midSeq[midSeqIndex++] = j;
+            }
+        }
+
+        mapping(midSeq);
     }
 
     public static void mapping(int[] memSeq) {
