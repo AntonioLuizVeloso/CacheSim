@@ -7,6 +7,11 @@
 
  import java.util.Arrays;
  import java.util.Random;
+ import java.io.File;
+ import java.io.FileWriter;
+ import java.io.IOException;
+ import java.time.LocalDateTime;
+ import java.time.format.DateTimeFormatter;
 
 public class Simulation {
     public static int cacheBlocks = 32;
@@ -130,5 +135,52 @@ public class Simulation {
         System.out.println("5. Cache Miss Rate: " + String.format("%.3f", missRate));
         System.out.println("6. Average Memory Access Time: " + String.format("%.3f", avgMemAccTime) + " T");
         System.out.println("7. Total Memory Access Time: " + totalMemAccTime + " T");
+
+        //TEXT LOG OF THE CACHE MEMORY TRACE
+        int[] tempArray = new int[cacheBlocks];
+        Arrays.fill(tempArray, -1);
+
+        LocalDateTime currTime = LocalDateTime.now();
+        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss-SS");
+        String formattedTime = currTime.format(timeFormat);
+        File fileName = new File("text-log-" + formattedTime + ".txt");
+
+        try {
+            if (fileName.createNewFile())
+                System.out.println("File created: " + fileName.getName());
+            else System.out.println("File already exists.");
+            
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        try {
+            FileWriter myWriter = new FileWriter(fileName.getName());
+            for (int i = 0; i < memAccCount; i++) {
+                int index = hitMissTable[i][3];
+                tempArray[index] = hitMissTable[i][0];
+
+                myWriter.write("Step " + i + " (Sequence: " + tempArray[index] + ")");
+                myWriter.write(String.format("\r\n%10s ", "Blocks"));
+                for (int j = 0; j < cacheBlocks; j++) {
+                    myWriter.write(String.format("%6s ", j));
+                }
+
+                myWriter.write(String.format("\r\n%10s ", "Data"));
+
+                for (int j = 0; j < cacheBlocks; j++) {
+                    if (tempArray[j] == -1) myWriter.write(String.format("%6s ", " "));
+                    else myWriter.write(String.format("%6s ", tempArray[j]));
+                }
+
+                myWriter.write("\r\n\n");
+            }
+
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 }
