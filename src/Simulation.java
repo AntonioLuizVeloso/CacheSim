@@ -13,9 +13,6 @@ public class Simulation {
     public static int cacheLine = 64;
 
     public static void main(String[] args) throws Exception {
-        int[] memSeqSample = {1, 7, 5, 0, 2, 1, 5, 6, 5, 2, 2, 0};
-        mapping(memSeqSample);
-
         testCases();
     }
 
@@ -69,6 +66,11 @@ public class Simulation {
 
         int hit = 0;
         int miss = 0;
+        int cacheAccTime = 1;
+        int memAccTime = 10;
+        int missPenalty = cacheAccTime+memAccTime; //load through miss penality
+        double hitRate, missRate, avgMemAccTime, totalMemAccTime;
+
         int[][] hitMissTable = new int[memSeq.length][4];
 
         for (int i = 0; i < memSeq.length; i++)
@@ -105,13 +107,26 @@ public class Simulation {
             }
         }
 
+        //FINAL MEMORY SNAPSHOT
+        System.out.println("[Block, Data]");
+        for (int i = 0; i < cacheBlocks; i++) {
+            System.out.print("[" + i + ", ");
+            if (cacheBlockArray[i] == -1) System.out.print("N/A]\n");
+            else System.out.print(cacheBlockArray[i] + "]\n");
+        }
+
+        hitRate = (double)hit / memSeq.length;
+        missRate = (double)miss / memSeq.length;
+        avgMemAccTime = (hitRate*cacheAccTime) + ((missRate)*missPenalty);
+        totalMemAccTime = (hit*cacheLine*cacheAccTime) + miss*(1+(cacheLine*memAccTime));
+
         System.out.println("Output: ");
         System.out.println("1. Memory Access Count: ");
         System.out.println("2. Cache Hit Count: " + hit);
         System.out.println("3. Cache Miss Count: " + miss);
-        System.out.println("4. Cache Hit Rate: " + (double)hit / memSeq.length);
-        System.out.println("5. Cache Miss Rate: " + (double)miss / memSeq.length);
-        System.out.println("6. Average Memory Access Time: ");
-        System.out.println("7. Total Memory Access Time: ");
+        System.out.println("4. Cache Hit Rate: " + String.format("%.3f", hitRate));
+        System.out.println("5. Cache Miss Rate: " + String.format("%.3f", missRate));
+        System.out.println("6. Average Memory Access Time: " + String.format("%.3f", avgMemAccTime) + " T");
+        System.out.println("7. Total Memory Access Time: " + totalMemAccTime + " T");
     }
 }
