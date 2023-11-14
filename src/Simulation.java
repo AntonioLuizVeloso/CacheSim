@@ -66,6 +66,7 @@ public class Simulation {
 
         int hit = 0;
         int miss = 0;
+        int memAccCount = 0;
         int cacheAccTime = 1;
         int memAccTime = 10;
         int missPenalty = cacheAccTime+memAccTime; //load through miss penality
@@ -115,13 +116,14 @@ public class Simulation {
             else System.out.print(cacheBlockArray[i] + "]\n");
         }
 
+        memAccCount = hit + miss;
         hitRate = (double)hit / memSeq.length;
         missRate = (double)miss / memSeq.length;
         avgMemAccTime = (hitRate*cacheAccTime) + ((missRate)*missPenalty);
         totalMemAccTime = (hit*cacheLine*cacheAccTime) + miss*(1+(cacheLine*memAccTime));
 
         System.out.println("Output: ");
-        System.out.println("1. Memory Access Count: ");
+        System.out.println("1. Memory Access Count: " + memAccCount);
         System.out.println("2. Cache Hit Count: " + hit);
         System.out.println("3. Cache Miss Count: " + miss);
         System.out.println("4. Cache Hit Rate: " + String.format("%.3f", hitRate));
