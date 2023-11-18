@@ -14,38 +14,48 @@
  import java.time.format.DateTimeFormatter;
 
 public class Simulation {
-    public static int cacheBlocks = 32;
-    public static int cacheLine = 64;
+    public int cacheBlocks = 32;
+    public int cacheLine = 64;
+    public int[] cacheBlockArray = new int[cacheBlocks];
 
-    public static void main(String[] args) throws Exception {
-        testCases();
+    private int mac;
+    private int chc;
+    private int cmc;
+    private double chr;
+    private double cmr;
+    private double amat;
+    private double tmat;
+    private int blockIndex;
+
+    public static void main(String[] args) throws Exception {      
+        //testCases();
     }
 
-    public static void testCases() {
+    public void testCases() {
         //Sequential Sequence
         System.out.println("\nTEST CASE 1");
-        int[] seqSeq = new int[8*cacheBlocks];
+        Integer[] seqSeq = new Integer[8*cacheBlocks];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 2*cacheBlocks; j++) {
                 seqSeq[(2*i*cacheBlocks) + j] = j;
             }
         }
 
-        mapping(seqSeq);
+        mapping(seqSeq,1);
 
         System.out.println("\nTEST CASE 2");
         //Random Sequence
-        int[] ranSeq = new int[4*cacheBlocks];
+        Integer[] ranSeq = new Integer[4*cacheBlocks];
         for (int i = 0; i < 4*cacheBlocks; i++) {
             Random rand = new Random();
             ranSeq[i] = rand.nextInt(4*cacheBlocks + 1);
         }
 
-        mapping(ranSeq);
+        mapping(ranSeq,1);
 
         System.out.println("\nTEST CASE 3");
         //Mid-Repeat Blocks
-        int[] midSeq = new int[4*(2*cacheBlocks+(cacheBlocks-2))];
+        Integer[] midSeq = new Integer[4*(2*cacheBlocks+(cacheBlocks-2))];
         int midSeqIndex = 0;
         for (int i = 0; i < 4; i++) {
             // First half of the sequence
@@ -62,13 +72,12 @@ public class Simulation {
             }
         }
 
-        mapping(midSeq);
+        mapping(midSeq,1);
     }
 
-    public static void mapping(int[] memSeq) {
-        int[] cacheBlockArray = new int[cacheBlocks];
+    public void mapping(Integer[] memSeq, int fileCheck) {
+        //int[] cacheBlockArray = new int[cacheBlocks];
         Arrays.fill(cacheBlockArray, -1);
-
         int hit = 0;
         int miss = 0;
         int memAccCount = 0;
@@ -84,7 +93,7 @@ public class Simulation {
 
         for (int i = 0; i < memSeq.length; i++) {
             hitMissTable[i][0] = memSeq[i];
-            int blockIndex = -1; //most recently used block index
+            blockIndex = -1; //most recently used block index
             boolean inCache = false;
 
             for (int j = 0; j < cacheBlocks; j++) {
@@ -118,7 +127,7 @@ public class Simulation {
                 cacheBlockArray[blockIndex] = memSeq[i];
             }
         }
-
+        
         //FINAL MEMORY SNAPSHOT
         System.out.println("[Block, Data]");
         for (int i = 0; i < cacheBlocks; i++) {
@@ -133,6 +142,8 @@ public class Simulation {
         avgMemAccTime = (hitRate*cacheAccTime) + ((missRate)*missPenalty);
         totalMemAccTime = (hit*cacheLine*cacheAccTime) + miss*(1+(cacheLine*memAccTime));
 
+        
+
         System.out.println("Output: ");
         System.out.println("1. Memory Access Count: " + memAccCount);
         System.out.println("2. Cache Hit Count: " + hit);
@@ -142,6 +153,38 @@ public class Simulation {
         System.out.println("6. Average Memory Access Time: " + String.format("%.3f", avgMemAccTime) + " T");
         System.out.println("7. Total Memory Access Time: " + totalMemAccTime + " T");
 
+        if(fileCheck==1)
+        {
+            createFile(memAccCount, hitMissTable);
+        }
+        setOutputs(memAccTime, hit, miss, hitRate, missRate, avgMemAccTime, totalMemAccTime);
+    }
+
+    private void setOutputs(int mac,int chc,int cmc, double chr, double cmr, double amat, double tmat)
+    {
+        this.mac=mac;
+        this.chc=chc;
+        this.cmc=cmc;
+        this.chr=chr;
+        this.cmr=cmr;
+        this.amat=amat;
+        this.tmat=tmat;
+    }
+
+    public int[] getIntOutputs()
+    {
+        int[] arr = {mac,chc,cmc,blockIndex};
+        return arr;
+    }
+
+    public double[] getDoubOutputs()
+    {
+        double[] arr = {chr,cmr,amat,tmat};
+        return arr;
+    }
+
+    public void createFile(int memAccCount, int[][] hitMissTable)
+    {
         //TEXT LOG OF THE CACHE MEMORY TRACE
         int[] tempArray = new int[cacheBlocks];
         Arrays.fill(tempArray, -1);
