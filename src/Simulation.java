@@ -127,7 +127,7 @@ public class Simulation {
                 cacheBlockArray[blockIndex] = memSeq[i];
             }
         }
-        
+        /*
         //FINAL MEMORY SNAPSHOT
         System.out.println("[Block, Data]");
         for (int i = 0; i < cacheBlocks; i++) {
@@ -135,14 +135,14 @@ public class Simulation {
             if (cacheBlockArray[i] == -1) System.out.print("N/A]\n");
             else System.out.print(cacheBlockArray[i] + "]\n");
         }
-
+        */
         memAccCount = hit + miss;
         hitRate = (double)hit / memSeq.length;
         missRate = (double)miss / memSeq.length;
         avgMemAccTime = (hitRate*cacheAccTime) + ((missRate)*missPenalty);
         totalMemAccTime = (hit*cacheLine*cacheAccTime) + miss*(1+(cacheLine*memAccTime));
 
-        
+        /* 
 
         System.out.println("Output: ");
         System.out.println("1. Memory Access Count: " + memAccCount);
@@ -152,7 +152,7 @@ public class Simulation {
         System.out.println("5. Cache Miss Rate: " + String.format("%.3f", missRate));
         System.out.println("6. Average Memory Access Time: " + String.format("%.3f", avgMemAccTime) + " T");
         System.out.println("7. Total Memory Access Time: " + totalMemAccTime + " T");
-
+        */
         if(fileCheck==1)
         {
             createFile(memAccCount, hitMissTable);

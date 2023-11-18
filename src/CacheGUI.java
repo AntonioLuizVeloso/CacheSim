@@ -31,7 +31,7 @@ public class CacheGUI implements ActionListener {
     private JLabel amat;
     private JLabel tmat;
     private Simulation sim;
-    
+
     public static void main (String[] args)
     {
         CacheGUI c = new CacheGUI();
@@ -160,7 +160,11 @@ public class CacheGUI implements ActionListener {
             }
                 
             else
+            {
                 memblocks.get(i).setText("Block "+i);
+                memblocks.get(i).setBackground(Color.white);
+            }
+                
         }
             
         memblocks.get(intout[3]).setBackground(Color.green);
@@ -181,11 +185,11 @@ public class CacheGUI implements ActionListener {
             count=0;
             Arrays.fill(sim.cacheBlockArray, -1);
             seq.clear();
-            System.out.println("Started");
+            //System.out.println("Started");
             String s = ta.getText();
             s= s.replace("\n", "");
             s= s.replace('\r', ' ');
-            System.out.println(s);
+            //System.out.println(s);
 
             try
             {
@@ -213,7 +217,7 @@ public class CacheGUI implements ActionListener {
         else if(e.getSource()==this.next)
         {
             count++;
-            System.out.println("Next");
+            //System.out.println("Next");
             Integer[] arr = new Integer[count];
             for(int i = 0; i<count; i++)
             {
@@ -250,7 +254,7 @@ public class CacheGUI implements ActionListener {
         }
         else if(e.getSource()==this.test1)
         {
-            System.out.println("Testing 1");
+            //System.out.println("Testing 1");
             Integer[] seqSeq = new Integer[8*sim.cacheBlocks];
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 2*sim.cacheBlocks; j++) {
@@ -269,7 +273,7 @@ public class CacheGUI implements ActionListener {
         }
         else if(e.getSource()==this.test2)
         {
-            System.out.println("Testing 2");
+            //System.out.println("Testing 2");
             Integer[] ranSeq = new Integer[4*sim.cacheBlocks];
             for (int i = 0; i < 4*sim.cacheBlocks; i++)
             {
@@ -287,7 +291,7 @@ public class CacheGUI implements ActionListener {
         }
         else if(e.getSource()==this.test3)
         {
-            System.out.println("Testing 3");
+            //System.out.println("Testing 3");
             Integer[] midSeq = new Integer[4*(2*sim.cacheBlocks+(sim.cacheBlocks-2))];
             int midSeqIndex = 0;
             for (int i = 0; i < 4; i++) {
