@@ -77,6 +77,8 @@ public class Simulation {
         int missPenalty = cacheAccTime+memAccTime; //load through miss penality
         double hitRate, missRate, avgMemAccTime, totalMemAccTime;
 
+        int storeLastEmptyIndex = 0;
+
         int[][] hitMissTable = new int[memSeq.length][4];
 
         for (int i = 0; i < memSeq.length; i++)
@@ -97,17 +99,19 @@ public class Simulation {
             }
 
             if (!inCache) {
-                //if not in the cache and if no hits yet and iterations haven't been completed yet, iterate through the blocks
-                if (hit == 0 && i < cacheBlocks) {
-                    blockIndex = i;
+                //if iterations haven't been completed yet, iterate through the blocks
+                if (storeLastEmptyIndex < cacheBlocks) {
+                    blockIndex = storeLastEmptyIndex;
                     miss += 1;
                 } 
                 
-                //if there has been a hit before, take the index of most recently used
-                else {
+                //if all blocks are filled up take the index of most recently used
+                else if (storeLastEmptyIndex >= cacheBlocks) {
                     blockIndex = hitMissTable[i-1][3];
                     miss += 1;
                 }
+
+                storeLastEmptyIndex += 1;
             }
 
             hitMissTable[i][3] = blockIndex;
