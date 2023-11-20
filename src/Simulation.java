@@ -163,7 +163,7 @@ public class Simulation {
         {
             createFile(memAccCount, hitMissTable);
         }
-        setOutputs(memAccTime, hit, miss, hitRate, missRate, avgMemAccTime, totalMemAccTime);
+        setOutputs(memAccCount, hit, miss, hitRate, missRate, avgMemAccTime, totalMemAccTime);
     }
 
     private void setOutputs(int mac,int chc,int cmc, double chr, double cmr, double amat, double tmat)
