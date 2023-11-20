@@ -28,7 +28,8 @@ public class Simulation {
     private int blockIndex;
 
     public static void main(String[] args) throws Exception {      
-        //testCases();
+        /*Simulation s = new Simulation();
+        s.testCases();*/
     }
 
     public void testCases() {
@@ -146,7 +147,7 @@ public class Simulation {
         avgMemAccTime = (hitRate*cacheAccTime) + ((missRate)*missPenalty);
         totalMemAccTime = (hit*cacheLine*cacheAccTime) + miss*(1+(cacheLine*memAccTime));
 
-        /* 
+        /*
 
         System.out.println("Output: ");
         System.out.println("1. Memory Access Count: " + memAccCount);
@@ -157,6 +158,7 @@ public class Simulation {
         System.out.println("6. Average Memory Access Time: " + String.format("%.3f", avgMemAccTime) + " T");
         System.out.println("7. Total Memory Access Time: " + totalMemAccTime + " T");
         */
+        
         if(fileCheck==1)
         {
             createFile(memAccCount, hitMissTable);
