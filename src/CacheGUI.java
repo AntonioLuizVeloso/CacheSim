@@ -44,7 +44,7 @@ public class CacheGUI implements ActionListener {
     CacheGUI() {
         sim = new Simulation();
         JFrame frame = new JFrame();
-        frame.setTitle("S12 Group 3, made by group members, FA + MRU sim");
+        frame.setTitle("CSARCH2 S12 Group 3 (Ibaoc, Magdamo, Valero, Veloso) FA + MRU Cache Simulation");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setSize(1280,720);
