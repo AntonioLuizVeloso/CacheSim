@@ -73,3 +73,45 @@ so forth.
 Outputs: The outputs are different every time, though the cache hit
 count and the cache miss count will always add up to the memory access
 count, which is 128. 
+
+TEST CASE 3: MID-REPEAT BLOCKS
+
+Input: Given n=32, the sequence would repeat the middle sequence twice, 
+which is 1-30, and continue until 2n. The sequence would then be repeated
+4 times.
+
+Cache Memory Trace: Due to the fact that MRU replacement algorithm is 
+being used, after the first mid-sequence repeat (0-30, 1-31) the rest
+of the elements would be assigned at the last cache block as that is 
+the most recently used. This would go on for each repetition with 2 key
+difference, the 1st is that the final assignments would go to the 
+previous cache block each time. The 2nd difference is that from the 3rd
+iteration onwards, the previous x cache blocks before "final" block 
+where all the other values would be assigned, would have their values 
+replaced due to the nature of MRU, with x being the number of iterations
+above 3. 
+ex:
+at the 1st iteration the cache would look like this: 
+[0 1 2 .. 29 30 63]
+
+at the 2nd iteration it will be like this: 
+[0 1 2 ... 29 62 63] 
+
+at the 3rd iteration it will be:
+[0 1 2 ... 27 29 61 62 63]
+it can be seen that the element before the 
+n-3 element has been replaced due to the fact that it can no longer fit 
+the entire 30 elements from the mid-sequence repeat, hence it started 
+replacing the using MRU.
+
+at the 4th iteration it will be:
+[0 1 2 ... 25 27 29 60 61 62 63]
+2 elements before n-4 has been replaced.
+
+Based on this pattern it can be assumed that the previous elements would
+continue to be replaced until eventually the entire cacheblock would be 
+replaced and filled with the upper values of 2n
+
+Outputs: The memory access count can be obtained by adding the number of 
+mid-sequence block to 2n and multiplying it 4 times: 4*(64+30)=376
+
