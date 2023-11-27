@@ -92,13 +92,13 @@ replaced due to the nature of MRU, with x being the number of iterations
 above 3. 
 ex:
 at the 1st iteration the cache would look like this: 
-[0 1 2 .. 29 30 63]
+[0 1 2 ..  25 26 27 28 29 30 63]
 
 at the 2nd iteration it will be like this: 
-[0 1 2 ... 29 62 63] 
+[0 1 2 ... 25 26 27 28 29 62 63] 
 
 at the 3rd iteration it will be:
-[0 1 2 ... 27 29 61 62 63]
+[0 1 2 ... 25 26 27 29 61 62 63]
 it can be seen that the element before the 
 n-3 element has been replaced due to the fact that it can no longer fit 
 the entire 30 elements from the mid-sequence repeat, hence it started 
@@ -109,9 +109,19 @@ at the 4th iteration it will be:
 2 elements before n-4 has been replaced.
 
 Based on this pattern it can be assumed that the previous elements would
-continue to be replaced until eventually the entire cacheblock would be 
-replaced and filled with the upper values of 2n
+continue to be replaced until eventually the entire cache would be replaced
+and filled with the upper half values of 2n
 
 Outputs: The memory access count can be obtained by adding the number of 
-mid-sequence block to 2n and multiplying it 4 times: 4*(64+30)=376
+mid-sequence block to 2n and multiplying it 4 times: 4*(64+30)=376. 
+Counting the hit rate per iteration: 30, 62, 61, 60 and the miss rate per
+iteration: 64, 32, 33, 34, it can be seen that aside from the first 
+iteration, which is a different case since it sets the first assignments
+as misses, the hit rate decreases while the miss rate increases as the 
+iterations increase. This is in line with the pattern observed that as
+the number of iterations increase the cache would eventually run out of
+blocks that would be a hit. Adding these values would would generate 
+a hit and miss rate of 0.57 (213/376) and 0.43 (163/376). With the generated
+values, the Average and Total Memory Access Time can be computed by simply
+implementing the formulas. 
 
