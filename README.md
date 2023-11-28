@@ -68,8 +68,8 @@ Cache Miss Rate is cache miss count over memory access count (160 /
 Average Memory Access Time uses the formula from the slides (hitRate*
 cacheAccTime) + ((missRate)*missPenalty)
 
-Total Memory Access Time uses the formula for load-through (# of hits 
-* # of words per block * cache access time) + misses * (1ns for 
+Total Memory Access Time uses the formula for load-through (# of hits * #
+of words per block * cache access time) + misses * (1ns for 
 probing + (# of words per block * memory access time))
 
 TEST CASE 2: RANDOM SEQUENCE
